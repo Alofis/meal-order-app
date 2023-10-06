@@ -1,32 +1,40 @@
 import classes from './Cart.module.css'
 import Modal from '../UI/Modal'
-import { Fragment, useContext } from 'react'
+import { useContext } from 'react'
 import CartContext from '../../store/cart-context'
+import CartItem from './CartItem'
 
 const Cart = (props) => {
-    // const cartItems = <ul className={classes['cart-items']}>{
-    //     [{
-    //    id: 'c1',
-    //    name: 'Sushi',
-    //     amount: 2,
-    //      price: 12.99
-    //  }].map((item) => <li>{item.name}</li>)
-    //  }</ul> 
 
     const cartCtx = useContext(CartContext)
-    console.log(cartCtx)
+   
     const cartTotalPrice = `$${cartCtx.totalPrice.toFixed(2)}`
     const hasItems = cartTotalPrice > 1;
 
-    return <Modal onClose={props.onClose}>
-            {cartCtx.items.map((item, index) => <Fragment key={index}>
-                <ul  className={classes['cart-items']}>
-                    <li>Name: {item.name}</li>
-                    <li>Amount: {item.amount}</li>
-                    <li>Price: {item.price}</li>
-                </ul>
-            </Fragment>)}
+    const cartItemRemoveHandler = (id) => {
 
+    };
+
+    const cartItemAddHandler = (item) => {
+        
+    }
+
+    const cartItems = (
+        <ul className={classes['cart-items']}>
+        {cartCtx.items.map((item) => <CartItem 
+            key={item.id}
+            name={item.name}
+            amount={item.amount}
+            price={`$${item.toFixed(2)}`}
+            onRemove={cartItemRemoveHandler.bind(null,item.id)}
+            onAdd={cartItemAddHandler.bind(null,item)}
+        />)}
+        </ul>
+        )
+    
+
+    return <Modal onClose={props.onClose}>
+            {cartItems}
             <div className={classes.total}>
             <span>Total amount:</span>
             <span>{cartTotalPrice}</span>
